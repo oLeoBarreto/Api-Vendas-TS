@@ -1,4 +1,5 @@
-import custumersRouter from '@modules/custumers/routes/custumers.routes';
+import customersRouter from '@modules/customers/routes/customers.routes';
+import ordersRouter from '@modules/orders/routes/Orders.routes';
 import productsRouter from '@modules/products/routes/products.routes';
 import passwordRouter from '@modules/users/routes/password.routes';
 import profileRouter from '@modules/users/routes/profile.routes';
@@ -13,7 +14,8 @@ routes.use('/users', usersRouter);
 routes.use('/sessions', sessionsRouter);
 routes.use('/password', passwordRouter);
 routes.use('/profile', profileRouter);
-routes.use('/custumers', custumersRouter);
+routes.use('/customers', customersRouter);
+routes.use('/orders', ordersRouter);
 
 routes.get('/', (req, res) => {
   return res.json({ message: 'Hello!' });

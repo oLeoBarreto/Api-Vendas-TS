@@ -2,26 +2,26 @@ import isAuthenticated from '@shared/http/middlewares/isAuthenticated';
 import { celebrate, Segments } from 'celebrate';
 import { Router } from 'express';
 import Joi from 'joi';
-import CustumersController from '../controller/CustumersController';
+import CustomersController from '../controller/CustomersController';
 
-const custumersRouter = Router();
-const custumersController = new CustumersController();
+const customersRouter = Router();
+const customersController = new CustomersController();
 
-custumersRouter.use(isAuthenticated);
+customersRouter.use(isAuthenticated);
 
-custumersRouter.get('/', custumersController.index);
+customersRouter.get('/', customersController.index);
 
-custumersRouter.get(
+customersRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
     },
   }),
-  custumersController.show,
+  customersController.show,
 );
 
-custumersRouter.post(
+customersRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
@@ -29,10 +29,10 @@ custumersRouter.post(
       email: Joi.string().email().required(),
     },
   }),
-  custumersController.crete,
+  customersController.crete,
 );
 
-custumersRouter.put(
+customersRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
@@ -43,17 +43,17 @@ custumersRouter.put(
       id: Joi.string().uuid().required(),
     },
   }),
-  custumersController.update,
+  customersController.update,
 );
 
-custumersRouter.delete(
+customersRouter.delete(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
     },
   }),
-  custumersController.delete,
+  customersController.delete,
 );
 
-export default custumersRouter;
+export default customersRouter;

@@ -136,3 +136,4 @@ ormconfig.json
 
 uploads/*
 !uploads/.gitkeep
+temp/

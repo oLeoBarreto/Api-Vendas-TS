@@ -1,28 +1,27 @@
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import Customers from '../typeorm/entities/Customer';
-import CustomersRepository from '../typeorm/repositories/CustomersRepository';
+import { injectable, inject } from 'tsyringe';
+import { ICreateCustomer } from '../domain/models/ICreateCustomer';
+import { ICustomer } from '../domain/models/ICustomer';
+import { ICustomersRepository } from '../domain/repositories/ICustomerRespository';
 
-interface IRequest {
-  name: string;
-  email: string;
-}
-
+@injectable()
 export default class CreateCustomerService {
-  public async execute({ name, email }: IRequest): Promise<Customers> {
-    const customersRepository = getCustomRepository(CustomersRepository);
-    const emailExists = await customersRepository.findByEmail(email);
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: ICustomersRepository,
+  ) {}
+
+  public async execute({ name, email }: ICreateCustomer): Promise<ICustomer> {
+    const emailExists = await this.customersRepository.findByEmail(email);
 
     if (emailExists) {
       throw new AppError('Email already registered!');
     }
 
-    const customer = customersRepository.create({
+    const customer = await this.customersRepository.create({
       name,
       email,
     });
-
-    await customersRepository.save(customer);
 
     return customer;
   }

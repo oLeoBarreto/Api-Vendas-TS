@@ -4,20 +4,20 @@ import { getRepository, Repository } from 'typeorm';
 import Customers from '../entities/Customer';
 
 export default class CustomersRepository implements ICustomersRepository {
-  private ormReporsitory: Repository<Customers>;
+  private ormRepository: Repository<Customers>;
 
   constructor() {
-    this.ormReporsitory = getRepository(Customers);
+    this.ormRepository = getRepository(Customers);
   }
 
   public async findAll(): Promise<Customers[] | undefined> {
-    const customers = await this.ormReporsitory.find();
+    const customers = await this.ormRepository.find();
 
     return customers;
   }
 
   public async findByName(name: string): Promise<Customers | undefined> {
-    const customer = await this.ormReporsitory.findOne({
+    const customer = await this.ormRepository.findOne({
       where: {
         name,
       },
@@ -27,7 +27,7 @@ export default class CustomersRepository implements ICustomersRepository {
   }
 
   public async findById(id: string): Promise<Customers | undefined> {
-    const customer = await this.ormReporsitory.findOne({
+    const customer = await this.ormRepository.findOne({
       where: {
         id,
       },
@@ -37,7 +37,7 @@ export default class CustomersRepository implements ICustomersRepository {
   }
 
   public async findByEmail(email: string): Promise<Customers | undefined> {
-    const customer = await this.ormReporsitory.findOne({
+    const customer = await this.ormRepository.findOne({
       where: {
         email,
       },
@@ -47,20 +47,20 @@ export default class CustomersRepository implements ICustomersRepository {
   }
 
   public async create({ name, email }: ICreateCustomer): Promise<Customers> {
-    const customer = this.ormReporsitory.create({ name, email });
+    const customer = this.ormRepository.create({ name, email });
 
-    await this.ormReporsitory.save(customer);
+    await this.ormRepository.save(customer);
 
     return customer;
   }
 
   public async save(customer: Customers): Promise<Customers> {
-    await this.ormReporsitory.save(customer);
+    await this.ormRepository.save(customer);
 
     return customer;
   }
 
   public async remove(customer: Customers): Promise<void> {
-    await this.ormReporsitory.remove(customer);
+    await this.ormRepository.remove(customer);
   }
 }

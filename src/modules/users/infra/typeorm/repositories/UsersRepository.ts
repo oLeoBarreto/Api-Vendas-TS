@@ -1,5 +1,7 @@
+import { SearchParams } from '@modules/customers/domain/repositories/ICustomerRespository';
 import { getRepository, Repository } from 'typeorm';
 import { ICreateUser } from '../../domain/models/ICreateUser';
+import { IPaginateUser } from '../../domain/models/IPaginateUser';
 import { IUsersRepository } from '../../domain/repositories/IUsersRepository';
 import User from '../entities/User';
 
@@ -10,10 +12,25 @@ export default class UsersRepository implements IUsersRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async findAll(): Promise<User[]> {
-    const users = await this.ormRepository.find();
+  public async findAll({
+    page,
+    skip,
+    take,
+  }: SearchParams): Promise<IPaginateUser> {
+    const [users, count] = await this.ormRepository
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
 
-    return users;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: users,
+    };
+
+    return result;
   }
 
   public async findByName(name: string): Promise<User | undefined> {

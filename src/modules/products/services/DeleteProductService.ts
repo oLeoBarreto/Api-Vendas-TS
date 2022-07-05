@@ -1,11 +1,8 @@
 import redisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
+import { IDeleteProduct } from '../domain/models/IDeleteProduct';
 import { IProductRepository } from '../domain/repositories/IProductRepository';
-
-interface IRequest {
-  id: string;
-}
 
 @injectable()
 export default class DeleteProductService {
@@ -14,7 +11,7 @@ export default class DeleteProductService {
     private productRepository: IProductRepository,
   ) {}
 
-  public async execute({ id }: IRequest): Promise<void> {
+  public async execute({ id }: IDeleteProduct): Promise<void> {
     const product = await this.productRepository.findById(id);
 
     if (!product) {

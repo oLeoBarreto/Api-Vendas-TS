@@ -7,8 +7,10 @@ import ListUserService from '../../../services/ListUserService';
 
 export default class UsersCotroller {
   public async index(req: Request, res: Response): Promise<Response> {
+    const page = req.query.page ? Number(req.query.page) : 1;
+    const limit = req.query.limit ? Number(req.query.limit) : 15;
     const listUser = container.resolve(ListUserService);
-    const users = await listUser.execute();
+    const users = await listUser.execute({ page, limit });
 
     return res.json(instanceToInstance(users));
   }

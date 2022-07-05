@@ -1,5 +1,7 @@
+import { SearchParams } from '@modules/customers/domain/repositories/ICustomerRespository';
 import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
 import { IFindProducts } from '@modules/products/domain/models/IFindProducts';
+import { IPaginateProduct } from '@modules/products/domain/models/IPaginateProduct';
 import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
 import { IProductRepository } from '@modules/products/domain/repositories/IProductRepository';
 import { getRepository, In, Repository } from 'typeorm';
@@ -12,10 +14,25 @@ export class ProductRepository implements IProductRepository {
     this.ormRepository = getRepository(Product);
   }
 
-  public async findAll(): Promise<Product[]> {
-    const products = await this.ormRepository.find();
+  public async findAll({
+    page,
+    skip,
+    take,
+  }: SearchParams): Promise<IPaginateProduct> {
+    const [products, count] = await this.ormRepository
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
 
-    return products;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: products,
+    };
+
+    return result;
   }
 
   public async findByName(name: string): Promise<Product | undefined> {

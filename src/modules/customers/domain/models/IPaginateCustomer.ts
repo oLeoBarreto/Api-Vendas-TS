@@ -1,12 +1,8 @@
 import { ICustomer } from './ICustomer';
 
-export interface IListCustomer {
-  from: number;
-  to: number;
+export interface IPaginateCustomer {
   per_page: number;
   total: number;
   current_page: number;
-  prev_page: number | null;
-  next_page: number | null;
   data: ICustomer[];
 }

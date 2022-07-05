@@ -8,8 +8,11 @@ import UpdateCustomerService from '../../../services/UpdateCustomerService';
 
 export default class customersController {
   public async index(req: Request, res: Response): Promise<Response> {
+    const page = req.query.page ? Number(req.query.page) : 1;
+    const limit = req.query.limit ? Number(req.query.limit) : 15;
+
     const listCustomers = container.resolve(ListCustomerService);
-    const customers = await listCustomers.execute();
+    const customers = await listCustomers.execute({ page, limit });
 
     return res.json(customers);
   }

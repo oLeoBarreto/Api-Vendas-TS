@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteUser } from '../infra/domain/models/IDeleteUser';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
+import { IDeleteUser } from '../domain/models/IDeleteUser';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
 @injectable()
 export default class DeleteUserService {

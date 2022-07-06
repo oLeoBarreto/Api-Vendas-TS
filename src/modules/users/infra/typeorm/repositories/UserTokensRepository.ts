@@ -1,5 +1,5 @@
 import { getRepository, Repository } from 'typeorm';
-import { IUserTokensRepository } from '../../domain/repositories/IUserTokenReposotiry';
+import { IUserTokensRepository } from '../../../domain/repositories/IUserTokenReposotiry';
 import UserToken from '../entities/UserToken';
 
 export default class UserTokensRepository implements IUserTokensRepository {

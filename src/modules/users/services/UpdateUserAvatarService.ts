@@ -2,10 +2,10 @@ import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
 import DiskStorageProvider from '@shared/providers/StorageProvider/DiskStorageProvider';
 import S3StorageProvider from '@shared/providers/StorageProvider/S3StorageProvider';
-import { IUpdateUserAvatar } from '../infra/domain/models/IUpdateUserAvatar';
+import { IUpdateUserAvatar } from '../domain/models/IUpdateUserAvatar';
 import { inject, injectable } from 'tsyringe';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
-import { IUser } from '../infra/domain/models/IUser';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IUser } from '../domain/models/IUser';
 
 @injectable()
 export default class UpdateUserAvatarService {

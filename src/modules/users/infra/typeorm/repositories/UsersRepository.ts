@@ -1,8 +1,8 @@
 import { SearchParams } from '@modules/customers/domain/repositories/ICustomerRespository';
 import { getRepository, Repository } from 'typeorm';
-import { ICreateUser } from '../../domain/models/ICreateUser';
-import { IPaginateUser } from '../../domain/models/IPaginateUser';
-import { IUsersRepository } from '../../domain/repositories/IUsersRepository';
+import { ICreateUser } from '../../../domain/models/ICreateUser';
+import { IPaginateUser } from '../../../domain/models/IPaginateUser';
+import { IUsersRepository } from '../../../domain/repositories/IUsersRepository';
 import User from '../entities/User';
 
 export default class UsersRepository implements IUsersRepository {

@@ -1,15 +1,17 @@
 import AppError from '@shared/errors/AppError';
-import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
-import { ICreateUser } from '../infra/domain/models/ICreateUser';
-import { IUser } from '../infra/domain/models/IUser';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
+import { ICreateUser } from '../domain/models/ICreateUser';
+import { IUser } from '../domain/models/IUser';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
 export default class CreateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ name, email, password }: ICreateUser): Promise<IUser> {
@@ -19,7 +21,7 @@ export default class CreateUserService {
       throw new AppError('Email adress already registered!');
     }
 
-    const hashedPassword = await hash(password, 8);
+    const hashedPassword = await this.hashProvider.generateHash(password);
 
     const user = await this.usersRepository.create({
       name,

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IUserToken } from '../../domain/models/IUserToken';
+import { IUserToken } from '../../../domain/models/IUserToken';
 
 @Entity('user_tokens')
 export default class UserToken implements IUserToken {

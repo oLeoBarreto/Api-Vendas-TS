@@ -1,17 +1,20 @@
 import AppError from '@shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
-import { hash } from 'bcryptjs';
-import { IResetPassword } from '../infra/domain/models/IResetPassword';
+import { IResetPassword } from '../domain/models/IResetPassword';
 import { inject, injectable } from 'tsyringe';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
-import { IUserTokenRepository } from '../infra/domain/repositories/IUserTokenReposotiry';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
+import { IUserTokensRepository } from '../domain/repositories/IUserTokenReposotiry';
 
 @injectable()
 export default class ResetPasswordlService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-    private tokenRepository: IUserTokenRepository,
+    @inject('UserTokensRepository')
+    private tokenRepository: IUserTokensRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ token, password }: IResetPassword): Promise<void> {
@@ -30,7 +33,7 @@ export default class ResetPasswordlService {
       throw new AppError('Token expired!');
     }
 
-    user.password = await hash(password, 8);
+    user.password = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.save(user);
   }

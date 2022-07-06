@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { IPaginateUser } from '../infra/domain/models/IPaginateUser';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
+import { IPaginateUser } from '../domain/models/IPaginateUser';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
 interface SearchParams {
   page: number;

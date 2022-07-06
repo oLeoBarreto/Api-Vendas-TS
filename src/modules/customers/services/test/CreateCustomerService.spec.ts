@@ -14,7 +14,7 @@ describe('CreateCustomer', () => {
   it('Should be able to create a customer', async () => {
     const customer = await createCustomer.execute({
       name: 'Leonardo Barreto',
-      email: 'leobcontato@gmail.com',
+      email: 'emailLeo@gmail.com',
     });
 
     expect(customer).toHaveProperty('id');
@@ -23,13 +23,13 @@ describe('CreateCustomer', () => {
   it('Should not be able to create a customer with the same email', async () => {
     await createCustomer.execute({
       name: 'Leonardo Barreto',
-      email: 'leobcontato@gmail.com',
+      email: 'emailLeo@gmail.com',
     });
 
     expect(
       createCustomer.execute({
         name: 'Leonardo Barreto',
-        email: 'leobcontato@gmail.com',
+        email: 'emailLeo@gmail.com',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

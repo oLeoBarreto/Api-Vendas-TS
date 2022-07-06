@@ -3,17 +3,18 @@ import EtherealMail from '@config/mail/EtherealMail';
 import path from 'path';
 import SESMail from '@config/mail/SESMail';
 import mailConfig from '@config/mail/mail';
-import { ISendForgotPasswordEmail } from '../infra/domain/models/ISendForgotPasswordEmail';
+import { ISendForgotPasswordEmail } from '../domain/models/ISendForgotPasswordEmail';
 import { inject, injectable } from 'tsyringe';
-import { IUsersRepository } from '../infra/domain/repositories/IUsersRepository';
-import { IUserTokenRepository } from '../infra/domain/repositories/IUserTokenReposotiry';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IUserTokensRepository } from '../domain/repositories/IUserTokenReposotiry';
 
 @injectable()
 export default class SendForgotPasswordEmailService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-    private tokenRepository: IUserTokenRepository,
+    @inject('UserTokensRepository')
+    private tokenRepository: IUserTokensRepository,
   ) {}
 
   public async execute({ email }: ISendForgotPasswordEmail): Promise<void> {
@@ -23,7 +24,7 @@ export default class SendForgotPasswordEmailService {
       throw new AppError('User does not exists!');
     }
 
-    const { token } = await this.tokenRepository.genarate(user.id);
+    const { token } = await this.tokenRepository.generate(user.id);
     const forgotPasswordTemplate = path.resolve(
       __dirname,
       '..',

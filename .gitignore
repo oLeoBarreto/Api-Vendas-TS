@@ -137,3 +137,5 @@ ormconfig.json
 uploads/*
 !uploads/.gitkeep
 temp/
+
+.docker/dbdata

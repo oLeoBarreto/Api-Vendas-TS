@@ -64,12 +64,11 @@
     "nodemailer": "^6.4.17",
     "pg": "^8.5.1",
     "rate-limiter-flexible": "^2.3.7",
-    "redis": "3.0.2",
+    "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.8.2",
     "ts-node-dev": "^2.0.0",
     "tsyringe": "^4.7.0",
-    "typeorm": "^0.2.29",
-    "typeorm-pagination": "^2.0.1"
+    "typeorm": "^0.3.7"
   }
 }

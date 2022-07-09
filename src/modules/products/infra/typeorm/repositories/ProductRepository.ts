@@ -4,14 +4,15 @@ import { IFindProducts } from '@modules/products/domain/models/IFindProducts';
 import { IPaginateProduct } from '@modules/products/domain/models/IPaginateProduct';
 import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
 import { IProductRepository } from '@modules/products/domain/repositories/IProductRepository';
-import { getRepository, In, Repository } from 'typeorm';
+import { dataSource } from '@shared/infra/typeorm';
+import { In, Repository } from 'typeorm';
 import Product from '../entities/Product';
 
 export class ProductRepository implements IProductRepository {
   private ormRepository: Repository<Product>;
 
   constructor() {
-    this.ormRepository = getRepository(Product);
+    this.ormRepository = dataSource.getRepository(Product);
   }
 
   public async findAll({
@@ -35,22 +36,14 @@ export class ProductRepository implements IProductRepository {
     return result;
   }
 
-  public async findByName(name: string): Promise<Product | undefined> {
-    const product = this.ormRepository.findOne({
-      where: {
-        name,
-      },
-    });
+  public async findByName(name: string): Promise<Product | null> {
+    const product = this.ormRepository.findOneBy({ name });
 
     return product;
   }
 
-  public async findById(id: string): Promise<Product | undefined> {
-    const product = this.ormRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  public async findById(id: string): Promise<Product | null> {
+    const product = this.ormRepository.findOneBy({ id });
 
     return product;
   }

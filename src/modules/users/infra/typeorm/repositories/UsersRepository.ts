@@ -1,5 +1,6 @@
 import { SearchParams } from '@modules/customers/domain/repositories/ICustomerRespository';
-import { getRepository, Repository } from 'typeorm';
+import { dataSource } from '@shared/infra/typeorm';
+import { Repository } from 'typeorm';
 import { ICreateUser } from '../../../domain/models/ICreateUser';
 import { IPaginateUser } from '../../../domain/models/IPaginateUser';
 import { IUsersRepository } from '../../../domain/repositories/IUsersRepository';
@@ -9,7 +10,7 @@ export default class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormRepository = dataSource.getRepository(User);
   }
 
   public async findAll({
@@ -33,7 +34,7 @@ export default class UsersRepository implements IUsersRepository {
     return result;
   }
 
-  public async findByName(name: string): Promise<User | undefined> {
+  public async findByName(name: string): Promise<User | null> {
     const user = await this.ormRepository.findOne({
       where: {
         name,
@@ -43,22 +44,14 @@ export default class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  public async findById(id: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ id });
 
     return user;
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: {
-        email,
-      },
-    });
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ email });
 
     return user;
   }

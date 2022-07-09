@@ -4,14 +4,15 @@ import {
   ICustomersRepository,
   SearchParams,
 } from '@modules/customers/domain/repositories/ICustomerRespository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Customers from '../entities/Customer';
+import { dataSource } from '@shared/infra/typeorm';
 
 export default class CustomersRepository implements ICustomersRepository {
   private ormRepository: Repository<Customers>;
 
   constructor() {
-    this.ormRepository = getRepository(Customers);
+    this.ormRepository = dataSource.getRepository(Customers);
   }
 
   public async findAll({
@@ -35,32 +36,20 @@ export default class CustomersRepository implements ICustomersRepository {
     return result;
   }
 
-  public async findByName(name: string): Promise<Customers | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        name,
-      },
-    });
+  public async findByName(name: string): Promise<Customers | null> {
+    const customer = await this.ormRepository.findOneBy({ name });
 
     return customer;
   }
 
-  public async findById(id: string): Promise<Customers | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  public async findById(id: string): Promise<Customers | null> {
+    const customer = await this.ormRepository.findOneBy({ id });
 
     return customer;
   }
 
-  public async findByEmail(email: string): Promise<Customers | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        email,
-      },
-    });
+  public async findByEmail(email: string): Promise<Customers | null> {
+    const customer = await this.ormRepository.findOneBy({ email });
 
     return customer;
   }
